@@ -128,6 +128,14 @@ Feedback was collected through a Google Form asking users to rate their experien
 ### Mobile Responsive Design
 ![Mobile responsive](../screenshots/mobile-responsive.png)
 
+## Project Structure
+
+campus-quest/
+├── campus-quest-frontend/
+├── campus-token-contract/
+├── quest-reward-contract/
+└── screenshots/
+
 ## Notes
 
 - This project uses Stellar Testnet.
