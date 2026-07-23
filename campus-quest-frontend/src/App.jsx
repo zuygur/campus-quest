@@ -36,6 +36,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('home')
   const [menuOpen, setMenuOpen] = useState(false)
   const [walletMenuOpen, setWalletMenuOpen] = useState(false)
+  const [creatingQuest, setCreatingQuest] = useState(false)
 
   async function refreshBalance(address) {
     try {
@@ -148,6 +149,9 @@ function App() {
   async function handleCreateQuest() {
     setError(null)
     setFeedback(null)
+    setCreatingQuest(true)
+    
+    await new Promise(resolve => setTimeout(resolve, 3000))
 
     try {
       await createQuest(
@@ -158,6 +162,7 @@ function App() {
       )
 
       await refreshQuests(walletAddress)
+
       setFeedback('Quest created successfully!')
 
       setNewQuestId('')
@@ -166,6 +171,8 @@ function App() {
     } catch (err) {
       console.error(err)
       setError('Could not create quest.')
+    } finally {
+      setCreatingQuest(false)
     }
   }
 
@@ -359,8 +366,12 @@ function App() {
                   value={newQuestReward}
                   onChange={(e) => setNewQuestReward(e.target.value)}
                 />
-                <button className="app-button" onClick={handleCreateQuest}>
-                  Create Quest
+                <button
+                  className="app-button"
+                  onClick={handleCreateQuest}
+                  disabled={creatingQuest}
+                >
+                  {creatingQuest ? 'Creating...' : 'Create Quest'}
                 </button>
 
                 <h3>Create Reward</h3>
