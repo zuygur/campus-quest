@@ -37,6 +37,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [walletMenuOpen, setWalletMenuOpen] = useState(false)
   const [creatingQuest, setCreatingQuest] = useState(false)
+  const [creatingReward, setCreatingReward] = useState(false)
 
   async function refreshBalance(address) {
     try {
@@ -179,6 +180,7 @@ function App() {
   async function handleCreateReward() {
     setError(null)
     setFeedback(null)
+    setCreatingReward(true)
 
     try {
       await createReward(
@@ -189,6 +191,7 @@ function App() {
       )
 
       await refreshRewards(walletAddress)
+
       setFeedback('Reward created successfully!')
 
       setNewRewardId('')
@@ -197,6 +200,8 @@ function App() {
     } catch (err) {
       console.error(err)
       setError('Could not create reward.')
+    } finally {
+      setCreatingReward(false)
     }
   }
 
@@ -397,8 +402,12 @@ function App() {
                   value={newRewardCost}
                   onChange={(e) => setNewRewardCost(e.target.value)}
                 />
-                <button className="app-button" onClick={handleCreateReward}>
-                  Create Reward
+                <button
+                  className="app-button"
+                  onClick={handleCreateReward}
+                  disabled={creatingReward}
+                >
+                  {creatingReward ? 'Creating...' : 'Create Reward'}
                 </button>
               </section>
             )}
