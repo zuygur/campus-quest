@@ -128,11 +128,13 @@ Feedback was collected through a Google Form asking users to rate their experien
 
 ## Project Structure
 
+```bash
 campus-quest/
 ├── campus-quest-frontend/
 ├── campus-token-contract/
 ├── quest-reward-contract/
 └── screenshots/
+```
 
 ## Notes
 
