@@ -47,13 +47,12 @@ export async function callContract(contractId, method, args, sourceAddress) {
   }
 
   if (txResponse.status !== 'SUCCESS') {
-  console.log("TX:", txResponse)
 
   const events = txResponse.resultMetaXdr?.v4?.()?.sorobanMeta?.()?.diagnosticEvents?.()
 
   console.log("EVENTS:", events)
 
-  throw new Error("Contract failed")
+  throw new Error("Contract call did not succeed on the network.")
 }
 
   return { hash: sendResponse.hash }
