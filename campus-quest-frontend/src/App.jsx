@@ -445,8 +445,14 @@ function App() {
         {feedback && <p className="feedback-success">{feedback}</p>}
         {error && <p className="feedback-error">{error}</p>}
       </div>
+
+      <footer className="footer">
+        Campus Quest • Built on Stellar Testnet
+      </footer>
     </div>
   )
+
+  
 }
 
 export default App
