@@ -1,0 +1,289 @@
+:root {
+  --bg: #fff8ec;
+  --surface: #ffffff;
+  --surface-2: #fff3d6;
+  --border: #f0dca0;
+  --text-primary: #3b342a;
+  --text-secondary: #8a7440;
+  --honey: #e6a817;
+  --honey-hover: #d99800;
+  --success: #5bae63;
+  --danger: #d64545;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--honey);
+  color: var(--text-primary);
+  position: relative;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.3em;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.topbar h1 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.topbar-right {
+  position: relative;
+}
+
+.wallet-chip {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.wallet-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+  padding: 12px;
+  min-width: 220px;
+  z-index: 10;
+}
+
+.wallet-dropdown p {
+  font-size: 0.8em;
+  word-break: break-all;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+
+.wallet-dropdown button {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.menu-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  z-index: 20;
+  box-shadow: 4px 0 12px var(--shadow);
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 15;
+}
+
+.menu-item {
+  padding: 12px 20px;
+  font-size: 0.95em;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.menu-item.disabled {
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.menu-item .soon {
+  display: block;
+  font-size: 0.75em;
+  color: var(--honey-hover);
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px 20px;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.hero h2 {
+  margin: 0 0 4px;
+  font-size: 2.3rem;
+  font-weight: 650;
+  color: #C48300;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.balance-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px var(--shadow);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.balance-card .label {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+.balance-card .value {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: var(--honey-hover);
+}
+
+.section {
+  margin-top: 28px;
+}
+
+.section h2 {
+  font-size: 1.1em;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1em;
+  color: var(--text-primary);
+}
+
+.card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.badge-completed {
+  align-self: flex-start;
+  background: rgba(91, 174, 99, 0.15);
+  color: var(--success);
+  font-size: 0.8em;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.app-button {
+  background: var(--honey);
+  color: var(--text-primary);
+  border: 1px solid var(--honey-hover);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.app-button:hover:not(:disabled) {
+  background: var(--honey-hover);
+  color: #fff;
+}
+
+.app-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.app-button.secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.app-input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.95em;
+}
+
+.feedback-success {
+  color: var(--success);
+  margin-top: 20px;
+}
+
+.feedback-error {
+  color: var(--danger);
+  margin-top: 20px;
+}
+
+.coming-soon-page {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 60px 20px;
+}
+
+.connect-wrapper {
+  text-align: center;
+  padding: 60px 20px;
+}
