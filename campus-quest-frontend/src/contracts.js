@@ -2,7 +2,7 @@ import { Horizon, TransactionBuilder, Networks, Contract, rpc, scValToNative } f
 import { signTransaction } from './wallet'
 
 export const TOKEN_ID = 'CDVRNAS5WSTMEEBZC34UKCJZM4A4PF2A5SQTV4GS3U4D4UF7AYA2UFDM'
-export const QUEST_ID = 'CA7UZ5LT7OKYHJATDFJROA5BOFQKEDIRXQ4NXVDU2GD4N4XATSPKST4S'
+export const QUEST_ID = 'CBRNJ3VUJQTLT2TUD6FX5ARPLGKPCV4V3IHXBKSVSBHVITRS7BEDNSNV'
 
 
 const horizonServer = new Horizon.Server('https://horizon-testnet.stellar.org')
@@ -31,6 +31,8 @@ export async function callContract(contractId, method, args, sourceAddress) {
     signedResult.signedTxXdr,
     Networks.TESTNET
   )
+  console.log(signedTransaction.source)
+
 
   const sendResponse = await rpcServer.sendTransaction(signedTransaction)
 
@@ -45,8 +47,14 @@ export async function callContract(contractId, method, args, sourceAddress) {
   }
 
   if (txResponse.status !== 'SUCCESS') {
-    throw new Error('Contract call did not succeed on the network.')
-  }
+  console.log("TX:", txResponse)
+
+  const events = txResponse.resultMetaXdr?.v4?.()?.sorobanMeta?.()?.diagnosticEvents?.()
+
+  console.log("EVENTS:", events)
+
+  throw new Error("Contract failed")
+}
 
   return { hash: sendResponse.hash }
 }
