@@ -86,7 +86,7 @@ stellar contract invoke --id <token-contract-id> --source <your-identity> --netw
 
 Vercel Analytics is integrated on the live deployment, tracking real visits and usage.
 
-![Analytics dashboard](screenshots/analytics.png)
+![Analytics dashboard](../screenshots/analytics.png)
 
 ## User Onboarding & Feedback
 
@@ -94,29 +94,29 @@ Vercel Analytics is integrated on the live deployment, tracking real visits and 
 
 Feedback was collected through a Google Form asking users to rate their experience and share suggestions.
 
-![Feedback summary 1](screenshots/google-form-responses1.png)
-![Feedback summary 2](screenshots/google-form-responses2.png)
+![Feedback summary 1](../screenshots/google-form-responses1.png)
+![Feedback summary 2](../screenshots/google-form-responses2.png)
 
 **Summary of feedback:** [Bu kısmı sen doldur — örneğin: "Kullanıcıların çoğu arayüzü kolay buldu (ortalama X/5), en sık belirtilen zorluk Freighter kurulumu oldu, bir kullanıcı ödül çeşitliliğinin artmasını istedi."]
 
 ### Proof of Wallet Interactions
 
-![User wallet interaction 1](screenshots/user-wallet-1.jpeg)
-![User wallet interaction 2](screenshots/user-wallet-2.jpeg)
-![User wallet interaction 3](screenshots/user-wallet-3.jpeg)
-![User wallet interaction 4](screenshots/user-wallet-4.jpeg)
-![User wallet interaction 5](screenshots/user-wallet-5.jpeg)
-![User wallet interaction 6](screenshots/user-wallet-6.jpeg)
+![User wallet interaction 1](../screenshots/user-wallet-1.jpeg)
+![User wallet interaction 2](../screenshots/user-wallet-2.jpeg)
+![User wallet interaction 3](../screenshots/user-wallet-3.jpeg)
+![User wallet interaction 4](../screenshots/user-wallet-4.jpeg)
+![User wallet interaction 5](../screenshots/user-wallet-5.jpeg)
+![User wallet interaction 6](../screenshots/user-wallet-6.jpeg)
 
 ## Screenshots
 
 ### Product UI
-![Homepage](screenshots/user-homepage-1.jpeg)
-![Reward Store](screenshots/reward-store.png)
-![Admin Panel](screenshots/admin-panel.png)
+![Homepage](../screenshots/user-homepage-1.jpeg)
+![Reward Store](../screenshots/reward-store.png)
+![Admin Panel](../screenshots/admin-panel.png)
 
 ### Mobile Responsive Design
-![Mobile responsive](screenshots/mobile-responsive.png)
+![Mobile responsive](../screenshots/mobile-responsive.png)
 
 ## Notes
 
