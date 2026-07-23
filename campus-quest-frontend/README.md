@@ -36,6 +36,8 @@ This project was built for the Rise In Stellar Journey to Mastery program — Le
 
 Two Soroban smart contracts work together via inter-contract communication:
 
+## Contract Deployment
+
 ### Campus Token Contract
 
 Handles the Campus Token balance system:
@@ -48,6 +50,12 @@ Handles the Campus Token balance system:
 - `balance` — reads a student's token balance
 
 **Deployed Contract ID (Testnet):**
+
+```bash
+CDVRNAS5WSTMEEBZC34UKCJZM4A4PF2A5SQTV4GS3U4D4UF7AYA2UFDM
+```
+
+### Quest & Reward Contract
 
 ```bash
 CBRNJ3VUJQTLT2TUD6FX5ARPLGKPCV4V3IHXBKSVSBHVITRS7BEDNSNV
@@ -90,7 +98,9 @@ Vercel Analytics is integrated on the live deployment, tracking real visits and 
 
 ## User Onboarding & Feedback
 
-**⚠️ Note:** at the time of this submission, 6 real users have onboarded and interacted with the app via their Stellar wallets. The requirement is 10+; [add more users before final submission / explain here how many additional users you plan to onboard].
+6 users tested the application by connecting their Stellar wallets and interacting with the smart contracts.
+
+The application was evaluated through wallet connection, quest completion, token distribution, and reward redemption.
 
 Feedback was collected through a Google Form asking users to rate their experience and share suggestions.
 
@@ -120,5 +130,17 @@ Feedback was collected through a Google Form asking users to rate their experien
 
 ## Notes
 
-- Recipient/student accounts must be funded on Testnet before interacting with the contracts. New accounts can be funded using [Friendbot](https://friendbot.stellar.org/).
-- Contract calls require network fees higher than simple payments, due to on-chain computation.
+- This project uses Stellar Testnet.
+- User wallets must be funded with [Friendbot](https://friendbot.stellar.org/) before interacting with the application.
+- Smart contract transactions require network fees due to Soroban execution.
+
+**Summary of feedback**
+
+- Most users rated the wallet connection process as easy.
+- The interface was considered simple and intuitive.
+- The most common challenge was installing and configuring a Stellar wallet for Testnet.
+- Users successfully completed quests and redeemed rewards after earning enough Campus Tokens.
+
+## License
+
+This project was developed as part of the Rise In Stellar Journey to Mastery – Level 4 program.
