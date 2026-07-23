@@ -154,10 +154,20 @@ function App() {
     
     await new Promise(resolve => setTimeout(resolve, 3000))
 
+    if (!newQuestTitle.trim()) {
+      setError("Quest title cannot be empty.")
+      return
+    }
+
+    if (Number(newQuestReward) <= 0) {
+      setError("Reward must be greater than zero.")
+      return
+    }
+
     try {
       await createQuest(
         Number(newQuestId),
-        newQuestTitle,
+        newQuestTitle.trim(),
         Number(newQuestReward),
         walletAddress
       )
@@ -182,10 +192,20 @@ function App() {
     setFeedback(null)
     setCreatingReward(true)
 
+    if (!newRewardTitle.trim()) {
+      setError("Reward title cannot be empty.")
+      return
+    }
+
+    if (Number(newRewardCost) <= 0) {
+      setError("Reward cost must be greater than zero.")
+      return
+    }
+
     try {
       await createReward(
         Number(newRewardId),
-        newRewardTitle,
+        newRewardTitle.trim(),
         Number(newRewardCost),
         walletAddress
       )
