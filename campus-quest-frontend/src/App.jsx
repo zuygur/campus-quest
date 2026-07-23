@@ -204,7 +204,11 @@ function App() {
     <div className="app-shell">
       <div className="topbar">
         <div className="topbar-left">
-          <button className="icon-button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+          <button
+            className="icon-button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Open menu"
+          >
             ☰
           </button>
           <h1 >Campus Quest</h1>
