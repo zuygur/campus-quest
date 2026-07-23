@@ -320,27 +320,35 @@ function App() {
             {activeTab === 'home' && (
               <section className="section">
                 <h2>Available Quests</h2>
+
                 <div className="card-list">
-                  {quests.map((quest) => (
-                    <div className="card" key={quest.id}>
-                      <h3>{quest.title}</h3>
-                      <p>Reward: {quest.reward_amount}</p>
-                      {completedQuests[quest.id] ? (
-                        <span className="badge-completed">Completed</span>
-                      ) : (
-                        <button
-                          className="app-button"
-                          onClick={() => handleCompleteQuest(quest.id)}
-                          disabled={
-                            processingId === quest.id ||
-                            completedQuests[quest.id]
-                          }
-                        >
-                          {processingId === quest.id ? 'Processing...' : 'Complete Quest'}
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                  {quests.length === 0 ? (
+                    <p>No quests available.</p>
+                  ) : (
+                    quests.map((quest) => (
+                      <div className="card" key={quest.id}>
+                        <h3>{quest.title}</h3>
+                        <p>Reward: {quest.reward_amount}</p>
+
+                        {completedQuests[quest.id] ? (
+                          <span className="badge-completed">Completed</span>
+                        ) : (
+                          <button
+                            className="app-button"
+                            onClick={() => handleCompleteQuest(quest.id)}
+                            disabled={
+                              processingId === quest.id ||
+                              completedQuests[quest.id]
+                            }
+                          >
+                            {processingId === quest.id
+                              ? 'Processing...'
+                              : 'Complete Quest'}
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  )}
                 </div>
               </section>
             )}
