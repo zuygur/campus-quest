@@ -19,8 +19,14 @@ const LEADERBOARD_USERS = [
     name: "Admin",
     address: "GDG5FK6IJWVD6KBDSQDSEMYECGHJONBPQS5MB57NXQEOS2EA3IGPRU4N",
   },
-
-  // Yeni kullanıcıları buraya ekleyeceğiz.
+  {
+    name: "Student 1",
+    address: "GD5R2O3KDJP4AWAXVIPFQKTKYIKYJJLO6LD3XOJU6J5Z62DEKVOLZ6YK",
+  },
+  {
+    name: "Student 2",
+    address: "GCQIGHUH63TONBR75LOGGIKFG2INVBJ6B3SVXLTO4BXX3UNI352T44CD",
+  },
 ]
 
 function shortenAddress(address) {
@@ -51,6 +57,12 @@ function App() {
   const [loadingRecommendation, setLoadingRecommendation] = useState(false)
   const [leaderboard, setLeaderboard] = useState([])
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
+
+  function closeOnboarding() {
+  localStorage.setItem("campusquest_onboarding", "true")
+  setShowOnboarding(false)
+}
 
   async function fetchRecommendation(address, currentQuests, currentCompleted) {
   if (!address || currentQuests.length === 0) return
@@ -164,6 +176,10 @@ function App() {
     try {
       const address = await connectWallet()
       setWalletAddress(address)
+      const firstVisit = !localStorage.getItem("campusquest_onboarding")
+      if (firstVisit) {
+        setShowOnboarding(true)
+      }
       await refreshBalance(address)
       const questList = await getAllQuests(address)
       setQuests(questList)
@@ -471,23 +487,29 @@ function App() {
               <section className="section">
                 <h2>🏆 Leaderboard</h2>
 
-                <div className="card-list">
+                <div className="leaderboard-list">
                   {loadingLeaderboard ? (
                     <p>Loading leaderboard...</p>
                   ) : (
                     leaderboard.map((user, index) => (
-                      <div className="card" key={user.address}>
-                        <h3>
+                    <div className="leaderboard-row" key={user.address}>
+                      <div className="leaderboard-left">
+                        <div className="leaderboard-name">
                           {index === 0 && "🥇 "}
                           {index === 1 && "🥈 "}
                           {index === 2 && "🥉 "}
                           {user.name}
-                        </h3>
+                        </div>
 
-                        <p>{shortenAddress(user.address)}</p>
-
-                        <strong>{user.balance} Campus Tokens</strong>
+                        <div className="leaderboard-address">
+                          {shortenAddress(user.address)}
+                        </div>
                       </div>
+
+                      <div className="leaderboard-score">
+                        🪙 {user.balance}
+                      </div>
+                    </div>
                     ))
                   )}
                 </div>
@@ -586,6 +608,36 @@ function App() {
         {feedback && <p className="feedback-success">{feedback}</p>}
         {error && <p className="feedback-error">{error}</p>}
       </div>
+
+      {showOnboarding && (
+        <div className="onboarding-overlay">
+          <div className="onboarding-card">
+
+            <h2>🎓 Welcome to Campus Quest</h2>
+
+            <p>
+              Complete campus quests, earn Campus Tokens,
+              redeem rewards, and discover new activities with
+              AI recommendations.
+            </p>
+
+            <ul>
+              <li>🪙 Earn Campus Tokens</li>
+              <li>🎁 Redeem Rewards</li>
+              <li>✨ Receive AI Recommendations</li>
+              <li>🏆 Climb the Leaderboard</li>
+            </ul>
+
+            <button
+              className="app-button"
+              onClick={closeOnboarding}
+            >
+              Got it!
+            </button>
+
+          </div>
+        </div>
+      )}
 
       <footer className="footer">
         Campus Quest • Built on Stellar Testnet
