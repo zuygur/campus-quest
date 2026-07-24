@@ -36,7 +36,7 @@ Return ONLY valid JSON in this format:
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3.1-8b-instruct:free",
+          model: "nvidia/nemotron-3-ultra-550b-a55b:free", 
           messages: [
             {
               role: "user",
