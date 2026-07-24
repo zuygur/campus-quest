@@ -26,6 +26,14 @@ Pick exactly one quest from the remaining list that the student should do next, 
     )
 
     const data = await response.json()
+    console.log(JSON.stringify(data, null, 2))
+    if (!data.candidates || data.candidates.length === 0) {
+        console.error(data)
+        return res.status(500).json({
+            error: 'Gemini returned no candidates',
+            details: data,
+        })
+        }
     const rawText = data.candidates[0].content.parts[0].text
 
     const cleanedText = rawText.replace(/```json|```/g, '').trim()
