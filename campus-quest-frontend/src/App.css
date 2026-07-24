@@ -220,6 +220,17 @@ body {
   font-size: 0.9em;
 }
 
+.quest-card,
+.reward-card {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.quest-card:hover,
+.reward-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
 .recommendation-card {
   margin-bottom: 28px;
 }

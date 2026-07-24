@@ -511,7 +511,7 @@ function App() {
                   ) : (
                     filteredQuests.map((quest) => (
                       <div
-                        className="card"
+                        className="card quest-card"
                         key={quest.id}
                         ref={(el) => (questRefs.current[quest.title] = el)}
                       >
@@ -582,7 +582,7 @@ function App() {
                 <h2>Reward Store</h2>
                 <div className="card-list">
                   {rewards.map((reward) => (
-                    <div className="card" key={reward.id}>
+                    <div className="card reward-card" key={reward.id}>
                       <h3>{reward.title}</h3>
                       <p>🪙 {reward.cost} tokens</p>
                       <button
