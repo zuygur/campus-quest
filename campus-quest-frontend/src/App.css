@@ -220,6 +220,10 @@ body {
   font-size: 0.9em;
 }
 
+.recommendation-card {
+  margin-bottom: 28px;
+}
+
 .badge-completed {
   align-self: flex-start;
   background: rgba(91, 174, 99, 0.15);
@@ -316,14 +320,20 @@ body {
   gap:6px;
 }
 
-.leaderboard-name{
-  font-size:22px;
-  font-weight:700;
+.leaderboard-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .leaderboard-address{
   font-size:15px;
   color:#777;
+
+  padding-left: 40px;
 }
 
 .leaderboard-score{
@@ -336,6 +346,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+.leaderboard-medal {
+  width: 30px;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .onboarding-overlay{
@@ -380,4 +395,51 @@ body {
 
 .onboarding-card li{
     margin:12px 0;
+}
+
+.quest-tabs {
+  position: relative;
+  display: flex;
+  background: #e8e8e8;
+  border-radius: 14px;
+  padding: 4px;
+  margin: 18px 0 24px;
+  overflow: hidden;
+}
+
+.tab-slider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+  transition: transform .28s ease;
+}
+
+.tab-slider.right {
+  transform: translateX(100%);
+}
+
+.tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+
+  position: relative;
+  z-index: 2;
+
+  transition: color .25s;
+}
+
+.recommendation-card .app-button {
+  margin-top: 12px;
 }

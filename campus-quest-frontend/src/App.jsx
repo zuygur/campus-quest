@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { connectWallet, disconnectWallet } from './wallet'
 import {
   getTokenBalance,
@@ -49,6 +49,7 @@ function App() {
   const [newRewardTitle, setNewRewardTitle] = useState('')
   const [newRewardCost, setNewRewardCost] = useState('')
   const [activeTab, setActiveTab] = useState('home')
+  const [questTab, setQuestTab] = useState("available")
   const [menuOpen, setMenuOpen] = useState(false)
   const [walletMenuOpen, setWalletMenuOpen] = useState(false)
   const [creatingQuest, setCreatingQuest] = useState(false)
@@ -58,6 +59,8 @@ function App() {
   const [leaderboard, setLeaderboard] = useState([])
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const questRefs = useRef({})
+  
 
   function closeOnboarding() {
   localStorage.setItem("campusquest_onboarding", "true")
@@ -226,6 +229,17 @@ function App() {
     }
   }
 
+  function scrollToQuest(title) {
+    const element = questRefs.current[title]
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      })
+    }
+  }
+
   async function handleRedeemReward(rewardId) {
     setError(null)
     setFeedback(null)
@@ -342,6 +356,14 @@ function App() {
     setMenuOpen(false)
   }
 
+  const filteredQuests = quests.filter((quest) => {
+    if (questTab === "available") {
+        return !completedQuests[quest.id]
+    }
+
+    return completedQuests[quest.id]
+  })
+
   return (
     <div className="app-shell">
       <div className="topbar">
@@ -425,14 +447,14 @@ function App() {
             <div className="balance-card">
               <div className="label">Balance</div>
               <div className="value">
-                {balance !== null ? `${balance} Campus Tokens` : 'Loading...'}
+                {balance !== null ? `🪙 ${balance} Campus Tokens` : 'Loading...'}
               </div>
             </div>
 
             {activeTab === 'home' && (
               <section className="section">
 
-              <div className="card">
+              <div className="card recommendation-card">
                 <h3>✨ AI Recommendation</h3>
                 {loadingRecommendation ? (
                   <p>Thinking...</p>
@@ -443,25 +465,61 @@ function App() {
                       <p>🎁 Reward: {recommendation.reward_amount} Campus Tokens</p>
                     )}
                     <p>{recommendation.reason}</p>
+                    <button
+                      className="app-button"
+                      onClick={() => scrollToQuest(recommendation.quest_title)}
+                    >
+                      Start Quest
+                    </button>
                   </>
                 ) : (
                   <p>No recommendation available.</p>
                 )}
               </div>
 
-                <h2>Available Quests</h2>
+                <h2>
+                  {questTab === "available"
+                    ? "Available Quests"
+                    : "Completed Quests"}
+                </h2>
+
+                <div className="quest-tabs">
+                  <div
+                    className={`tab-slider ${
+                      questTab === "completed" ? "right" : ""
+                    }`}
+                  ></div>
+
+                  <button
+                    className="tab"
+                    onClick={() => setQuestTab("available")}
+                  >
+                    Available
+                  </button>
+
+                  <button
+                    className="tab"
+                    onClick={() => setQuestTab("completed")}
+                  >
+                    Completed
+                  </button>
+                </div>
 
                 <div className="card-list">
                   {quests.length === 0 ? (
                     <p>No quests available.</p>
                   ) : (
-                    quests.map((quest) => (
-                      <div className="card" key={quest.id}>
+                    filteredQuests.map((quest) => (
+                      <div
+                        className="card"
+                        key={quest.id}
+                        ref={(el) => (questRefs.current[quest.title] = el)}
+                      >
                         <h3>{quest.title}</h3>
                         <p>Reward: {quest.reward_amount}</p>
 
-                        {completedQuests[quest.id] ? (
-                          <span className="badge-completed">Completed</span>
+                        {questTab === "completed" ? (
+                          <span className="badge-completed">✔ Completed</span>
                         ) : (
                           <button
                             className="app-button"
@@ -472,8 +530,8 @@ function App() {
                             }
                           >
                             {processingId === quest.id
-                              ? 'Processing...'
-                              : 'Complete Quest'}
+                              ? "Processing..."
+                              : "Complete Quest"}
                           </button>
                         )}
                       </div>
@@ -495,15 +553,18 @@ function App() {
                     <div className="leaderboard-row" key={user.address}>
                       <div className="leaderboard-left">
                         <div className="leaderboard-name">
-                          {index === 0 && "🥇 "}
-                          {index === 1 && "🥈 "}
-                          {index === 2 && "🥉 "}
-                          {user.name}
+                          <span className="leaderboard-medal">
+                            {index === 0 && "🥇"}
+                            {index === 1 && "🥈"}
+                            {index === 2 && "🥉"}
+                          </span>
+
+                          <span>{user.name}</span>
                         </div>
 
-                        <div className="leaderboard-address">
-                          {shortenAddress(user.address)}
-                        </div>
+                      <div className="leaderboard-address">
+                        {shortenAddress(user.address)}
+                      </div>
                       </div>
 
                       <div className="leaderboard-score">
@@ -523,7 +584,7 @@ function App() {
                   {rewards.map((reward) => (
                     <div className="card" key={reward.id}>
                       <h3>{reward.title}</h3>
-                      <p>{reward.cost} tokens</p>
+                      <p>🪙 {reward.cost} tokens</p>
                       <button
                         className="app-button"
                         onClick={() => handleRedeemReward(reward.id)}
