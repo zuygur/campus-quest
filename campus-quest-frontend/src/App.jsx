@@ -41,8 +41,8 @@ function App() {
   const [recommendation, setRecommendation] = useState(null)
   const [loadingRecommendation, setLoadingRecommendation] = useState(false)
 
-  async function fetchRecommendation(currentQuests, currentCompleted) {
-    if (!walletAddress || currentQuests.length === 0) return
+  async function fetchRecommendation(address, currentQuests, currentCompleted) {
+  if (!address || currentQuests.length === 0) return
 
     setLoadingRecommendation(true)
 
@@ -51,9 +51,12 @@ function App() {
         .filter((q) => currentCompleted[q.id])
         .map((q) => q.title)
 
-      const remainingQuests = currentQuests.filter(
-        (q) => !currentCompleted[q.id]
-      )
+      const remainingQuests = currentQuests
+        .filter((q) => !currentCompleted[q.id])
+        .map((q) => ({
+          title: q.title,
+          reward_amount: Number(q.reward_amount),
+        }))
 
       const response = await fetch('/api/recommend', {
         method: 'POST',
@@ -130,7 +133,7 @@ function App() {
       setQuests(questList)
       await refreshRewards(address)
       const completed = await refreshCompletedQuests(address, questList)
-      await fetchRecommendation(questList, completed)
+      await fetchRecommendation(address, questList, completed)
     } catch (err) {
       console.error(err)
       setError('Wallet connection failed.')
@@ -359,7 +362,6 @@ function App() {
 
             <div className="card">
               <h3>✨ AI Recommendation</h3>
-
               {loadingRecommendation ? (
                 <p>Thinking...</p>
               ) : recommendation ? (
