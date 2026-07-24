@@ -38,6 +38,43 @@ function App() {
   const [walletMenuOpen, setWalletMenuOpen] = useState(false)
   const [creatingQuest, setCreatingQuest] = useState(false)
   const [creatingReward, setCreatingReward] = useState(false)
+  const [recommendation, setRecommendation] = useState(null)
+  const [loadingRecommendation, setLoadingRecommendation] = useState(false)
+
+  async function fetchRecommendation(currentQuests, currentCompleted) {
+    if (!walletAddress || currentQuests.length === 0) return
+
+    setLoadingRecommendation(true)
+
+    try {
+      const completedTitles = currentQuests
+        .filter((q) => currentCompleted[q.id])
+        .map((q) => q.title)
+
+      const remainingQuests = currentQuests.filter(
+        (q) => !currentCompleted[q.id]
+      )
+
+      const response = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          completedTitles,
+          remainingQuests,
+        }),
+      })
+
+      const data = await response.json()
+
+      setRecommendation(data.recommendation)
+    } catch (err) {
+      console.error(err)
+    }
+
+    setLoadingRecommendation(false)
+  }
 
   async function refreshBalance(address) {
     try {
@@ -80,6 +117,7 @@ function App() {
       }
     }
     setCompletedQuests(results)
+    return results
   }
 
   async function handleConnect() {
@@ -91,7 +129,8 @@ function App() {
       const questList = await getAllQuests(address)
       setQuests(questList)
       await refreshRewards(address)
-      await refreshCompletedQuests(address, questList)
+      const completed = await refreshCompletedQuests(address, questList)
+      await fetchRecommendation(questList, completed)
     } catch (err) {
       console.error(err)
       setError('Wallet connection failed.')
@@ -121,7 +160,8 @@ function App() {
       await completeQuest(questId, walletAddress)
       setFeedback('Quest completed! Tokens have been added to your balance.')
       await refreshBalance(walletAddress)
-      await refreshCompletedQuests(walletAddress, quests)
+      const completed = await refreshCompletedQuests(walletAddress, quests)
+      await fetchRecommendation(quests, completed)
     } catch (err) {
       console.error(err)
       setError('Could not complete this quest. Please try again.')
@@ -317,6 +357,21 @@ function App() {
               </div>
             </div>
 
+            <div className="card">
+              <h3>✨ AI Recommendation</h3>
+
+              {loadingRecommendation ? (
+                <p>Thinking...</p>
+              ) : recommendation ? (
+                <>
+                  <strong>{recommendation.quest_title}</strong>
+                  <p>{recommendation.reason}</p>
+                </>
+              ) : (
+                <p>No recommendation available.</p>
+              )}
+            </div>
+
             {activeTab === 'home' && (
               <section className="section">
                 <h2>Available Quests</h2>
@@ -450,9 +505,7 @@ function App() {
         Campus Quest • Built on Stellar Testnet
       </footer>
     </div>
-  )
-
-  
+  ) 
 }
 
 export default App
