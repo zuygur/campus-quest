@@ -19,7 +19,24 @@ ${remainingQuests
   .map((q) => `${q.title} (${q.reward_amount} Campus Tokens)`)
   .join(', ')}
 
-Choose ONLY ONE quest from the remaining list.
+You are an AI assistant inside a university campus app.
+
+Recommend exactly ONE quest from the remaining quests.
+
+Your explanation should sound like a friendly recommendation to a student.
+
+Do NOT mention completed quest names unless it feels natural.
+
+Keep the reason under 20 words.
+
+Examples of good reasons:
+
+- Earn extra Campus Tokens while learning something new.
+- This activity matches your interests and gives a great reward.
+- A great opportunity to meet other students on campus.
+- This quest offers a high reward with little effort.
+- Continue exploring campus events and earn more tokens.
+- If you enjoyed similar activities, you'll probably like this one too.
 
 Return ONLY valid JSON in this format:
 
