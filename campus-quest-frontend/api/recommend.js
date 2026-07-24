@@ -63,8 +63,6 @@ Return ONLY valid JSON in this format:
 
     const rawText = data.choices[0].message.content
 
-    console.log(rawText)
-
     const cleaned = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")

@@ -14,6 +14,15 @@ import './App.css'
 
 const ADMIN_ADDRESS = 'GDG5FK6IJWVD6KBDSQDSEMYECGHJONBPQS5MB57NXQEOS2EA3IGPRU4N'
 
+const LEADERBOARD_USERS = [
+  {
+    name: "Admin",
+    address: "GDG5FK6IJWVD6KBDSQDSEMYECGHJONBPQS5MB57NXQEOS2EA3IGPRU4N",
+  },
+
+  // Yeni kullanıcıları buraya ekleyeceğiz.
+]
+
 function shortenAddress(address) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`
 }
@@ -40,6 +49,8 @@ function App() {
   const [creatingReward, setCreatingReward] = useState(false)
   const [recommendation, setRecommendation] = useState(null)
   const [loadingRecommendation, setLoadingRecommendation] = useState(false)
+  const [leaderboard, setLeaderboard] = useState([])
+  const [loadingLeaderboard, setLoadingLeaderboard] = useState(false)
 
   async function fetchRecommendation(address, currentQuests, currentCompleted) {
   if (!address || currentQuests.length === 0) return
@@ -109,6 +120,31 @@ function App() {
     }
   }
 
+  async function refreshLeaderboard() {
+    setLoadingLeaderboard(true)
+
+    try {
+      const users = await Promise.all(
+        LEADERBOARD_USERS.map(async (user) => {
+          const balance = await getTokenBalance(user.address)
+
+          return {
+            ...user,
+            balance: Number(balance),
+          }
+        })
+      )
+
+      users.sort((a, b) => b.balance - a.balance)
+
+      setLeaderboard(users)
+    } catch (err) {
+      console.error(err)
+    }
+
+    setLoadingLeaderboard(false)
+  }
+
   async function refreshCompletedQuests(address, questList) {
     const results = {}
     for (const quest of questList) {
@@ -134,6 +170,7 @@ function App() {
       await refreshRewards(address)
       const completed = await refreshCompletedQuests(address, questList)
       await fetchRecommendation(address, questList, completed)
+      await refreshLeaderboard()
     } catch (err) {
       console.error(err)
       setError('Wallet connection failed.')
@@ -434,8 +471,25 @@ function App() {
               <section className="section">
                 <h2>🏆 Leaderboard</h2>
 
-                <div className="card">
-                  <p>Leaderboard will appear here.</p>
+                <div className="card-list">
+                  {loadingLeaderboard ? (
+                    <p>Loading leaderboard...</p>
+                  ) : (
+                    leaderboard.map((user, index) => (
+                      <div className="card" key={user.address}>
+                        <h3>
+                          {index === 0 && "🥇 "}
+                          {index === 1 && "🥈 "}
+                          {index === 2 && "🥉 "}
+                          {user.name}
+                        </h3>
+
+                        <p>{shortenAddress(user.address)}</p>
+
+                        <strong>{user.balance} Campus Tokens</strong>
+                      </div>
+                    ))
+                  )}
                 </div>
               </section>
             )}
