@@ -15,7 +15,9 @@ A student has completed these campus quests:
 ${completedTitles.join(', ') || 'none'}
 
 Remaining quests:
-${remainingQuests.map((q) => q.title).join(', ')}
+${remainingQuests
+  .map((q) => `${q.title} (${q.reward_amount} Campus Tokens)`)
+  .join(', ')}
 
 Choose ONLY ONE quest from the remaining list.
 
@@ -23,6 +25,7 @@ Return ONLY valid JSON in this format:
 
 {
   "quest_title": "...",
+  "reward_amount": 20,
   "reason": "..."
 }
 `
@@ -59,6 +62,8 @@ Return ONLY valid JSON in this format:
     }
 
     const rawText = data.choices[0].message.content
+
+    console.log(rawText)
 
     const cleaned = rawText
       .replace(/```json/g, "")

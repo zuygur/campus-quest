@@ -332,9 +332,11 @@ function App() {
           <div className="menu-overlay" onClick={() => setMenuOpen(false)} />
           <div className="menu-drawer">
             <div className="menu-item" onClick={() => goToTab('home')}>Home</div>
-            <div className="menu-item disabled">
+            <div
+              className="menu-item"
+              onClick={() => goToTab('leaderboard')}
+            >
               Leaderboard
-              <span className="soon">Coming in Level 5</span>
             </div>
             <div className="menu-item disabled">
               Upcoming Quests
@@ -374,22 +376,26 @@ function App() {
               </div>
             </div>
 
-            <div className="card">
-              <h3>✨ AI Recommendation</h3>
-              {loadingRecommendation ? (
-                <p>Thinking...</p>
-              ) : recommendation ? (
-                <>
-                  <strong>{recommendation.quest_title}</strong>
-                  <p>{recommendation.reason}</p>
-                </>
-              ) : (
-                <p>No recommendation available.</p>
-              )}
-            </div>
-
             {activeTab === 'home' && (
               <section className="section">
+
+              <div className="card">
+                <h3>✨ AI Recommendation</h3>
+                {loadingRecommendation ? (
+                  <p>Thinking...</p>
+                ) : recommendation ? (
+                  <>
+                    <strong>{recommendation.quest_title}</strong>
+                    {recommendation.reward_amount && (
+                      <p>🎁 Reward: {recommendation.reward_amount} Campus Tokens</p>
+                    )}
+                    <p>{recommendation.reason}</p>
+                  </>
+                ) : (
+                  <p>No recommendation available.</p>
+                )}
+              </div>
+
                 <h2>Available Quests</h2>
 
                 <div className="card-list">
@@ -420,6 +426,16 @@ function App() {
                       </div>
                     ))
                   )}
+                </div>
+              </section>
+            )}
+
+            {activeTab === 'leaderboard' && (
+              <section className="section">
+                <h2>🏆 Leaderboard</h2>
+
+                <div className="card">
+                  <p>Leaderboard will appear here.</p>
                 </div>
               </section>
             )}
