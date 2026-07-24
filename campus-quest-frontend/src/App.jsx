@@ -164,7 +164,7 @@ function App() {
       setFeedback('Quest completed! Tokens have been added to your balance.')
       await refreshBalance(walletAddress)
       const completed = await refreshCompletedQuests(walletAddress, quests)
-      await fetchRecommendation(quests, completed)
+      await fetchRecommendation(walletAddress, quests, completed)
     } catch (err) {
       console.error(err)
       setError('Could not complete this quest. Please try again.')
@@ -216,6 +216,20 @@ function App() {
       )
 
       await refreshQuests(walletAddress)
+
+      const updatedQuests = await getAllQuests(walletAddress)
+      setQuests(updatedQuests)
+
+      const completed = await refreshCompletedQuests(
+        walletAddress,
+        updatedQuests
+      )
+
+      await fetchRecommendation(
+        walletAddress,
+        updatedQuests,
+        completed
+      )
 
       setFeedback('Quest created successfully!')
 

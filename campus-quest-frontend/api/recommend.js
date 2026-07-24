@@ -10,38 +10,72 @@ export default async function handler(req, res) {
   }
 
   try {
-    const prompt = `A student has completed these campus quests: ${completedTitles.join(', ') || 'none yet'}.
-The remaining available quests are: ${remainingQuests.map((q) => q.title).join(', ')}.
-Pick exactly one quest from the remaining list that the student should do next, and give a short, friendly one-sentence reason why. Respond ONLY with valid JSON in this exact format, no extra text: {"quest_title": "...", "reason": "..."}`
+    const prompt = `
+A student has completed these campus quests:
+${completedTitles.join(', ') || 'none'}
+
+Remaining quests:
+${remainingQuests.map((q) => q.title).join(', ')}
+
+Choose ONLY ONE quest from the remaining list.
+
+Return ONLY valid JSON in this format:
+
+{
+  "quest_title": "...",
+  "reason": "..."
+}
+`
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-        }),
+          model: "meta-llama/llama-3.1-8b-instruct:free",
+          messages: [
+            {
+              role: "user",
+              content: prompt
+            }
+          ]
+        })
       }
     )
 
     const data = await response.json()
-    console.log(JSON.stringify(data, null, 2))
-    if (!data.candidates || data.candidates.length === 0) {
-        console.error(data)
-        return res.status(500).json({
-            error: 'Gemini returned no candidates',
-            details: data,
-        })
-        }
-    const rawText = data.candidates[0].content.parts[0].text
 
-    const cleanedText = rawText.replace(/```json|```/g, '').trim()
-    const result = JSON.parse(cleanedText)
+    if (!data.choices || data.choices.length === 0) {
+      console.error(data)
 
-    return res.status(200).json({ recommendation: result })
+      return res.status(500).json({
+        error: "OpenRouter returned no response",
+        details: data
+      })
+    }
+
+    const rawText = data.choices[0].message.content
+
+    const cleaned = rawText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim()
+
+    const result = JSON.parse(cleaned)
+
+    return res.status(200).json({
+      recommendation: result
+    })
+
   } catch (err) {
     console.error(err)
-    return res.status(500).json({ error: 'Recommendation failed' })
+
+    return res.status(500).json({
+      error: err.message
+    })
   }
 }
